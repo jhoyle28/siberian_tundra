@@ -42,19 +42,85 @@
                 gap: 20px;
                 margin: 1%;
             }
+            #introduction-imgs {
+                display: flex;
+                gap: 20px;
+                margin: 1%;
+                background-color: rgb(230, 143, 86);
+                padding: 1%;
+                border-radius: 5px;
+            }
 
             #text-wrapper {
                 flex: 1;
             }
 
-            img {
+            #qualitive-map {
                 width: 60%;
                 max-width: 500px;
                 border: 5px solid rgb(133, 74, 34);
                 border-radius: 5px;
             }
+            #boltss-map {
+                display: block;
+                margin: auto;
+                width: 70%;
+                max-width: 100vw;
+                justify-content: center;
+            }
+            img {
+                border: 5px solid rgb(133, 74, 34);
+                border-radius: 5px;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                background:rgb(205, 113, 71);
+                color: rgb(70, 47, 27);
+                padding: 15px;
+                border: 5px solid rgb(133, 74, 34);
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            }
+
+            .popup.show {
+                display: block;
+                opacity: 1;
+            }
+
+            .popup.hide {
+                opacity: 0;
+            }
+
 
         </style>
+        <script>
+            window.onload = function () {
+                showPopup();
+            };
+
+            function showPopup() {
+                let popup = document.getElementById("popup");
+                popup.classList.add("show");
+            }
+
+            function closePopup() {
+                let popup = document.getElementById("popup");
+                popup.classList.add("hide");
+
+                setTimeout(() => {
+                    popup.classList.remove("show", "hide");
+                    popup.style.display = "none";
+                }, 500); // Wait for fade-out transition to complete
+            }
+
+
+        </script>
     </head>
     <body>
         <div id="header-div">
@@ -69,13 +135,21 @@
                     Overview
                 </h2>
                 <p id="introduction-p" style="font-size:large;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">
-                    The siberian siberian tundra is located exclusively in Russia, as shown in this map.
+                    The siberian tundra is located exclusively in Russia, as shown in this map.
                     It is on the north of the country, stretching across most of the width of Asia.
                     The absolute location is approximately 60°N to 80°N latitude and 90°E to 180°E longitude.
                 </p>
             </div>
-
-            <img src="assets/siberian-tundra-location-map.png" style="width:40%">
+            <img id="qualitive-map" src="assets/siberian-tundra-location-map.png" style="width:40%">
         </div>
+        <div id="introduction-imgs">
+            <img id="boltss-map" src="assets/russian-tundra-map.jpg">
+            <img id="boltss-map" src="assets/tundra-sat.jpg">
+        </div>
+        <div id="popup" class="popup">
+            <p>This website is intended to be viewed on widescreen devices</p>
+            <button onclick="closePopup()">OK</button>
+        </div>
+
     </body>
 </html>
