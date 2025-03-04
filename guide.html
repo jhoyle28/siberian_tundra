@@ -103,43 +103,14 @@
                 background-color: chocolate;
             }
 
-            .popup.show {
-                display: block;
-                opacity: 1;
-            }
-
-            .popup.hide {
-                opacity: 0;
-            }
-
 
         </style>
-        <script>
-            window.onload = function () {
-                showPopup();
-            };
-
-            function showPopup() {
-                let popup = document.getElementById("popup");
-                popup.classList.add("show");
-            }
-
-            function closePopup() {
-                let popup = document.getElementById("popup");
-                popup.classList.add("hide");
-
-                setTimeout(() => {
-                    popup.classList.remove("show", "hide");
-                    popup.style.display = "none";
-                }, 500); // Wait for fade-out transition to complete
-            }
-        </script>
     </head>
     <body>
         <div id="header-div">
             <h1>Siberian Tundra Survival Guide</h1>
-            <button>Overview</button>
-            <button onclick="window.location.href='guide.html';">Survival Guide</button>
+            <button onclick="window.location.href='index.html';">Overview</button>
+            <button>Survival Guide</button>
         </div>
         <div class="-div" id="overview">
             <div class="text-wrapper">
@@ -157,10 +128,6 @@
         <div id="introduction-imgs">
             <img class="map" src="assets/russian-tundra-map.jpg">
             <img class="map" src="assets/tundra-sat.jpg">
-        </div>
-        <div id="popup" class="popup">
-            <p>This website is intended to be viewed on widescreen devices</p>
-            <button onclick="closePopup()">OK</button>
         </div>
         <div class="-div" id="climate">
             <img id="climate-graph" src="assets/tundra-banner.JPG" style="width:40%">
