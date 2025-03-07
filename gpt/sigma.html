@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Dodge Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        canvas { display: block; }
+        #score { position: absolute; top: 10px; left: 10px; color: white; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Lighting
+        const light = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(light);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(0, 5, 5);
+        scene.add(directionalLight);
+
+        // Ground Plane
+        const groundGeometry = new THREE.PlaneGeometry(10, 20);
+        const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x333333, side: THREE.DoubleSide });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.5;
+        scene.add(ground);
+
+        // Player sphere
+        const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
+        const player = new THREE.Mesh(geometry, material);
+        scene.add(player);
+
+        // Obstacles array
+        const obstacles = [];
+        let score = 0;
+        function createObstacle() {
+            const geom = new THREE.BoxGeometry(1, 1, 1);
+            const mat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+            const cube = new THREE.Mesh(geom, mat);
+            cube.position.set((Math.random() - 0.5) * 8, 5, 0);
+            scene.add(cube);
+            obstacles.push(cube);
+        }
+
+        // Game loop
+        let speed = 0.05;
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            
+            // Move obstacles
+            obstacles.forEach((cube, index) => {
+                cube.position.y -= speed;
+                if (cube.position.y < -5) {
+                    scene.remove(cube);
+                    obstacles.splice(index, 1);
+                    score++;
+                    document.getElementById("score").textContent = "Score: " + score;
+                }
+            });
+
+            // Collision detection
+            obstacles.forEach(cube => {
+                if (Math.abs(cube.position.y - player.position.y) < 0.5 &&
+                    Math.abs(cube.position.x - player.position.x) < 0.5) {
+                    alert("Game Over! Your score: " + score);
+                    location.reload();
+                }
+            });
+        }
+        animate();
+
+        // Player movement
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft" && player.position.x > -4) {
+                player.position.x -= 1;
+            } else if (event.key === "ArrowRight" && player.position.x < 4) {
+                player.position.x += 1;
+            }
+        });
+
+        // Spawn obstacles
+        setInterval(createObstacle, 1000);
+        
+        camera.position.z = 5;
+    </script>
+</body>
+</html>
